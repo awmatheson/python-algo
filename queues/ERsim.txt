@@ -1,0 +1,25 @@
+add Wayne,B. Critical
+add Allen,B. Serious
+add Kent,C. Fair
+add Queen,O. Critical
+add Prince,D. Serious
+add Jordan,H. Fair
+treat next
+treat next
+add Curry,A. Fair
+treat next
+treat next
+treat next
+treat next
+add Lance,D. Critical
+add Jones,J. Serious
+treat next
+treat next
+treat next
+add Queen,O. Critical
+add Jones,J. Serious
+add Lance,D. Fair
+add Wayne,B. Serious
+treat all
+treat next
+exit

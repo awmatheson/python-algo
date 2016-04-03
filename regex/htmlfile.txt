@@ -1,0 +1,174 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"> 
+<title> Programming Assignment 6 </title>
+</head>
+
+<body>
+<h2>CS 313E (50597):  Bulko</h2>
+<b>Programming Assignment 6:</b><br>
+<b>HTML Checker</b><br>
+<b>Due Date: Oct. 23, 11:59 pm</b><br>
+
+<p>A <i>markup language</i> is a system for inserting annotations into a
+   document.  The most important feature of a markup language is that
+   the <i>tags</i> it uses to indicate annotations should be easy to
+   distinguish from the document <i>content</i>.</p>
+
+<p>One of the most well-known markup languages is the one commonly used
+   to create Web pages, called <b>HTML</b>, or "Hypertext Markup Language".
+   In HTML, tags appear in "angle brackets" such as in "&lt;html&gt;".
+   When you load a Web page in your browser, you don't see the tags
+   themselves:  the browser interprets the tags as instructions on
+   how to format the text for display.</p>
+
+<p>Most tags in HTML are used in pairs to indicate where an effect
+   starts and ends.  For example:</p>
+<ul>
+   <li>&lt;p&gt; represents the start of a paragraph, and &lt;/p&gt;
+       indicates where that paragraph ends.</li>
+   <li>&lt;b&gt; and &lt;/b&gt; are used to place the enclosed text
+       in <b>bold</b> font, and &lt;i&gt; and &lt;/i&gt; indicate
+       that the enclosed text is <i>italic</i>.</li>
+</ul>
+
+<p>Note that "end" tags look just like the "start" tags, except for
+   the addition of a backslash after the &lt; symbol.</p>
+
+<p>Sets of tags are often nested inside other sets of tags.  For
+   example, an <i>ordered list</i> is a list of numbered bullets.
+   You specify the start of an ordered list with the tag &lt;ol&gt;,
+   and the end with &lt;/ol&gt;.  Within the ordered list, you
+   identify items to be numbered with the tags &lt;li&gt; (for "list
+   item") and &lt;/li&gt;.  For example, the following specification:</p>
+<pre>
+   &lt;ol&gt;
+      &lt;li&gt;First item&lt;/li&gt;
+      &lt;li&gt;Second item&lt;/li&gt;
+      &lt;li&gt;Third item&lt;/li&gt;
+   &lt;/ol&gt;
+</pre>
+
+<p>would result in the following:</p>
+
+<ol>
+   <li>First item</li>
+   <li>Second item</li>
+   <li>Third item</li>
+</ol>
+
+<p>Notice how you start the ordered list with the &lt;ol&gt; tag, 
+   specify three line items with matching &lt;li&gt; and &lt;/li&gt;
+   tags, and the close the ordered list with the &lt;/ol&gt; tag.</p>
+
+<p>You may have noticed that the pattern of using matching tags
+   strongly resembles the pattern of matching parentheses that we
+   discussed in class:  when you use parentheses, brackets, and
+   braces, they have to match in reverse order, such as "{[()]}".
+   A pattern such as "[(])" would be incorrect since the right
+   bracket does not match the left parenthesis.  Similarly, an
+   HTML pattern such as &lt;ol&gt;&lt;li&gt;&lt;/ol&gt;&lt;/li&gt;
+   would be incorrect since the closing tags are in the wrong
+   order.</p>
+
+<p><b>Your assignment</b> is to write an "HTML Checker" program that
+   takes as input an HTML file, and produces a report indicating whether
+   or not the tags are correctly matched.</p>
+
+<ul>
+   <li>Just as the parenthesis checker uses a stack to store symbols
+       waiting for a match to be found, your program should also use
+       a stack. <b>You should include the list implementation of the
+       Stack abstract data type in your code.</b></li>
+   <li>The first task your program must do is read in an HTML file and
+       extract the tags.  A simple strategy for doing this would be to
+       write a function "getTag" that:</li>
+       <ul>
+          <li>reads one character at a time from the data file, throwing
+              everything away until it gets to a "&lt;".  (Discard the
+              "&lt;" as well.)</li>
+          <li>reads one character at a time, appending it to a string,
+              until it gets to a "&gt;" or a space.  (Discard the "&gt;"
+              as well.)</li>
+          <li>returns the string as a tag.</li>
+       </ul>
+   <li>Call getTag repeatedly, saving the results in a list.  Make sure
+       you account for end-of-file conditions in getTag.  If you've done
+       everything correctly, you now have a list of tags, both start and
+       end.</li> 
+   <li>Iterating through your list of tags:</li>
+       <ul>
+          <li>if a tag does not start with a "/", it's a start tag.
+              Push it on a stack.</li>
+          <li>if a tag starts with a "/", and the rest of it matches
+              the tag on the stack, it's a correctly matched end tag.
+              Pop the start tag off the stack.</li>
+          <li>if a tag starts with a "/" but does not match the tag
+              on the top of the stack, there is a mismatch.  Print
+              an error message and terminate.</li>
+       </ul>
+</ul>
+
+<p><b>Input:</b></p>
+
+<p>As input for your program, use this file!  That is, use the file
+   "http://www.cs.utexas.edu/~bulko/fall2015/50597.hw6.html".  Download
+   this file to your computer and rename it "htmlfile.txt".</p>
+
+<p><b>Output:</b></p>
+
+<p>The output of your program should include the following:</p>
+   <li>A printout of your list of tags (the result of your repeated calls
+       to getTag).</li>
+   <li>One line for each tag as you process it, explaining the action
+       and showing the current contents of the stack.  Some <u>examples
+       </u> are:</li> 
+<pre>
+      Tag is b : pushed:  stack is now [html, body, b]
+      Tag is /b : matches:  stack is now [html, body]
+      Tag is ul : pushed:  stack is now [html, body, ul]
+</pre>
+
+<p>Your program should end with either:</p>
+<pre>
+      Error:  tag is XXX but top of stack is YYY
+</pre>
+<p>or</p>
+<pre>
+      Processing complete.  No mismatches found.
+</pre>
+<p>or</p>
+<pre>
+      Processing complete.  Unmatched tags remain on stack:  [XXX, YYY, ZZZ]
+</pre>
+
+<p><b>Plot Twist:</b>
+
+<p>There are some tags that do not need matching start and end tags!
+   One example is &lt;br /&gt;.  This tag is used to indicate a line
+   break at the current location.  Another is &lt;meta&gt;, which is
+   used to provide special information ("metadata") about a Web page.</p>
+
+<p>Keep a list of these special cases in a list called EXCEPTIONS which
+   you hard-code into your main program.  They will appear in your
+   list of tags just as any other tags.  However, when you begin your
+   iteration through the list and you encounter one of these, you do
+   not need to push it on the stack since you won't be waiting for a
+   close tag.  Instead, just print an output line such as:</p>
+<pre>
+      Tag is br : does not need to match:  stack is now [html, body, b]
+</pre>
+<p>and continue.</p>
+
+<p><b>General requirements:</b></p>
+<ul>
+<li>You must submit a file called htmlChecker.py via Canvas by the deadline
+    shown at the top of this page.</li>
+<li>As always, I will be looking for good documentation, descriptive variable
+    names, clean logical structure, and adherence to all coding conventions
+    expected of an experienced programmer; there will be penalties for failure
+    to meet these standards.</li>
+<li>Your code must compile and run before submission. </li>
+<li>Don't forget to include the header (as described in previous assignments)! </li>
+</ul>
+
+</body>
